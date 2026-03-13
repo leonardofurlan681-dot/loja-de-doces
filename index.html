@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBES Confeitaria | Experiência Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c99a6d;
+            --dark: #1a1a1a;
+            --light: #fdfaf5;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+
+        /* HEADER */
+        header { 
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(255, 255, 255, 0.98); 
+            padding: 15px 5%; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow);
+        }
+        .menu-icon, .cart-trigger { font-size: 1.4rem; cursor: pointer; color: var(--dark); flex: 1; transition: 0.3s; }
+        .menu-icon:hover, .cart-trigger:hover { color: var(--primary); }
+        
+        .logo-container { flex: 2; text-align: center; }
+        .logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2rem; font-weight: 700; color: var(--primary); 
+            text-decoration: none; display: inline-block;
+        }
+        .logo span { display: block; font-size: 0.65rem; font-family: 'Poppins'; letter-spacing: 3px; color: var(--dark); font-weight: 400; }
+
+        .header-icons { flex: 1; text-align: right; position: relative; }
+        .cart-count { 
+            position: absolute; top: -8px; right: -10px; 
+            background: var(--primary); color: white; font-size: 0.7rem; 
+            padding: 2px 7px; border-radius: 50%; font-weight: bold;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 70vh; margin-top: 70px;
+            background: url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1600') center/cover no-repeat;
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.2); }
+        .hero-content { position: relative; z-index: 1; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 10px; }
+
+        /* BANNERS */
+        .banners { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 50px 5%; }
+        .b-card { 
+            height: 200px; border-radius: 12px; background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+            color: white; font-weight: 600; text-decoration: none; transition: 0.4s;
+        }
+        .b-card:hover { transform: scale(1.02); }
+        .b-card::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+        .b-card span { z-index: 1; text-transform: uppercase; letter-spacing: 2px; font-size: 1.1rem; }
+
+        /* VITRINE */
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0 5% 80px; }
+        
+        .p-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; position: relative; }
+        .p-card:hover { transform: translateY(-10px); }
+        .p-img-box { width: 100%; height: 280px; overflow: hidden; }
+        .p-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .p-card:hover .p-img { transform: scale(1.1); }
+        .p-info { padding: 25px; text-align: center; }
+        .p-category { font-size: 0.7rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 5px; display: block; }
+        .p-price { font-weight: 600; color: var(--dark); font-size: 1.2rem; margin-top: 10px; }
+
+        /* MODAIS */
+        .modal-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
+            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+        }
+        .modal-content { 
+            background: white; border-radius: 20px; max-width: 850px; width: 100%; 
+            display: grid; grid-template-columns: 1.2fr 1fr; overflow: hidden; position: relative;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-img { width: 100%; height: 100%; object-fit: cover; min-height: 400px; }
+        .modal-body { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 1.8rem; cursor: pointer; z-index: 10; color: #999; }
+        
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 30px; }
+        .btn { padding: 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-main { background: var(--dark); color: white; }
+        .btn-sec { background: var(--primary); color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* SIDEBARS */
+        .sidebar { 
+            position: fixed; top: 0; width: 350px; height: 100%; 
+            background: white; z-index: 3000; box-shadow: 0 0 50px rgba(0,0,0,0.2); 
+            transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0); padding: 40px 30px;
+            display: flex; flex-direction: column;
+        }
+        #menuSide { left: -350px; background: var(--dark); color: white; }
+        #menuSide.active { left: 0; }
+        #cartSide { right: -350px; }
+        #cartSide.active { right: 0; }
+
+        .cart-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .cart-details { flex: 1; }
+        .remove-btn { color: var(--danger); cursor: pointer; font-size: 0.75rem; font-weight: 600; margin-top: 5px; display: inline-block; }
+
+        footer { background: #f4f1ea; padding: 60px 5% 30px; text-align: center; border-top: 1px solid #e0ddd5; }
+        .socials i { font-size: 1.5rem; margin: 0 15px; color: var(--dark); cursor: pointer; transition: 0.3s; }
+        .socials i:hover { color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .banners { grid-template-columns: 1fr; }
+            .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+            .modal-img { height: 250px; min-height: auto; }
+            .sidebar { width: 100%; }
+            #menuSide { left: -100%; }
+            #cartSide { right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="menuSide">
+        <span class="close-btn" style="color: white" onclick="toggleMenu()">&times;</span>
+        <h2 style="font-family: 'Playfair Display'; margin-bottom: 40px; font-size: 2rem;">Menu</h2>
+        <nav style="display: flex; flex-direction: column; gap: 20px;">
+            <a href="#" style="color: white; text-decoration: none; font-size: 1.2rem;">Bolos Inteiros</a>
+            <a href="#" style="color: white; text-decoration: none; font-size: 1.2rem;">Fatias Gourmet</a>
+            <a href="#" style="color: white; text-decoration: none; font-size: 1.2rem;">Doces de Festa</a>
+            <a href="#" style="color: white; text-decoration: none; font-size: 1.2rem;">Cafeteria</a>
+            <a href="#" style="color: white; text-decoration: none; font-size: 1.2rem;">Encomendas Especiais</a>
+        </nav>
+    </div>
+
+    <div class="sidebar" id="cartSide">
+        <span class="close-btn" onclick="toggleCart()">&times;</span>
+        <h2 style="margin-bottom: 30px; font-family: 'Playfair Display';">Sua Sacola</h2>
+        <div id="cartList" style="flex: 1; overflow-y: auto;">
+            </div>
+        <div style="padding-top: 20px; border-top: 2px solid #f4f1ea;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <span style="font-weight: 600;">Total Estimado:</span>
+                <span id="totalPrice" style="font-weight: 700; color: var(--primary); font-size: 1.4rem;">R$ 0,00</span>
+            </div>
+            <button class="btn btn-main" style="width: 100%;">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <div class="logo-container">
+            <a href="#" class="logo">VIBES<span>CONFEITARIA ARTESANAL</span></a>
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-shopping-bag cart-trigger" onclick="toggleCart()"></i>
+            <span class="cart-count" id="cartCounter">0</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Arte em Açúcar</h1>
+            <p>Descubra o sabor da verdadeira confeitaria artesanal premium.</p>
+        </div>
+    </section>
+
+    <section class="banners">
+        <a href="#" class="b-card" style="background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400')"><span>BOLOS</span></a>
+        <a href="#" class="b-card" style="background-image: url('https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400')"><span>FATIAS</span></a>
+        <a href="#" class="b-card" style="background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400')"><span>DOCES</span></a>
+    </section>
+
+    <div class="section-header">
+        <h2>Destaques da Vitrine</h2>
+        <p>Produtos frescos feitos diariamente para você</p>
+    </div>
+
+    <div class="grid" id="mainGrid">
+        </div>
+
+    <div class="modal-overlay" id="pModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img src="" id="mImg" class="modal-img">
+            <div class="modal-body">
+                <span id="mCat" class="p-category">CATEGORIA</span>
+                <h2 id="mTitle" style="font-family: 'Playfair Display'; font-size: 2.2rem; line-height: 1.2;"></h2>
+                <p id="mDesc" style="margin: 20px 0; color: #777; line-height: 1.6;"></p>
+                <div id="mPrice" class="p-price" style="font-size: 1.8rem; color: var(--primary);"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-main">COMPRAR AGORA</button>
+                    <button class="btn btn-sec" onclick="addToCartFromModal()">ADICIONAR À SACOLA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="socials" style="margin-bottom: 25px;">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-pinterest"></i>
+            <i class="fab fa-whatsapp"></i>
+        </div>
+        <p style="font-size: 0.9rem; color: #888;">&copy; 2026 Vibes Confeitaria S.A. | Rua da Doçura, 123 - São Paulo</p>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, cat: "Bolo Inteiro", name: "Bolo de Pistache & Limão", price: 185.00, desc: "Massa chiffon de pistache, recheio de curd de limão siciliano e cobertura de merengue suíço.", img: "https://images.unsplash.com/photo-1519340333755-5072134dc221?w=600" },
+            { id: 2, cat: "Fatia", name: "Fatia Triple Chocolate", price: 26.90, desc: "Três camadas de chocolate: amargo 70%, ao leite e mousse de chocolate branco belga.", img: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=600" },
+            { id: 3, cat: "Doce Fino", name: "Caixa de Macarons (12un)", price: 84.00, desc: "Sabores: Lavanda, Baunilha Bourbon, Framboesa e Caramelo Salgado.", img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=600" },
+            { id: 4, cat: "Bolo Inteiro", name: "Red Velvet Premium", price: 160.00, desc: "Aveludado, levemente achocolatado e com o autêntico recheio de cream cheese frosting.", img: "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?w=600" },
+            { id: 5, cat: "Fatia", name: "Torta Banoffee Supreme", price: 22.00, desc: "Base de biscoito amanteigado, doce de leite caseiro, bananas frescas e chantilly leve.", img: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600" },
+            { id: 6, cat: "Bolo Inteiro", name: "Bolo de Frutas Vermelhas", price: 145.00, desc: "Massa de baunilha com geleia artesanal de morango, amora e framboesa.", img: "https://images.unsplash.com/photo-1464305795204-6f5bdee7351a?w=600" },
+            { id: 7, cat: "Doce", name: "Eclair de Avelã", price: 18.00, desc: "Massa choux recheada com creme de avelã e cobertura de chocolate crocante.", img: "https://images.unsplash.com/photo-1621236378699-8597faf6a176?w=600" },
+            { id: 8, cat: "Bolo Inteiro", name: "Cheesecake New York", price: 130.00, desc: "O clássico assado lentamente com calda de frutas vermelhas por cima.", img: "https://images.unsplash.com/photo-1524351199679-46cddfdb5840?w=600" },
+            { id: 9, cat: "Fatia", name: "Bolo de Cenoura Gourmet", price: 19.00, desc: "Com cobertura generosa de brigadeiro gourmet de chocolate belga.", img: "https://images.unsplash.com/photo-1621350058140-9c131ef9aa59?w=600" },
+            { id: 10, cat: "Doce", name: "Torta de Limão", price: 15.00, desc: "Base crocante, creme cítrico e topo de marshmallow maçaricado.", img: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600" },
+            { id: 11, cat: "Fatia", name: "Fatia Prestígio", price: 21.00, desc: "Chocolate intenso com recheio de coco fresco em flocos.", img: "https://images.unsplash.com/photo-1557308535-4421df73c6d3?w=600" },
+            { id: 12, cat: "Doce Fino", name: "Petit Gateau Congelado", price: 35.00, desc: "Embalagem com 2 unidades para você finalizar em casa em 5 minutos.", img: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600" }
+        ];
+
+        let cart = [];
+        let activeProduct = null;
+
+        // Renderizar produtos
+        function init() {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="p-card" onclick="openProduct(${p.id})">
+                    <div class="p-img-box"><img src="${p.img}" class="p-img"></div>
+                    <div class="p-info">
+                        <span class="p-category">${p.cat}</span>
+                        <h3>${p.name}</h3>
+                        <div class="p-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Abrir Pop-up de Detalhes
+        function openProduct(id) {
+            activeProduct = products.find(p => p.id === id);
+            document.getElementById('mImg').src = activeProduct.img;
+            document.getElementById('mTitle').innerText = activeProduct.name;
+            document.getElementById('mDesc').innerText = activeProduct.desc;
+            document.getElementById('mCat').innerText = activeProduct.cat;
+            document.getElementById('mPrice').innerText = `R$ ${activeProduct.price.toFixed(2).replace('.', ',')}`;
+            document.getElementById('pModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
+
+        // Funções de Sidebar
+        function toggleCart() { document.getElementById('cartSide').classList.toggle('active'); }
+        function toggleMenu() { document.getElementById('menuSide').classList.toggle('active'); }
+
+        // Carrinho
+        function addToCartFromModal() {
+            cart.push({...activeProduct});
+            updateCartUI();
+            closeModal();
+            toggleCart();
+        }
+
+        function remove(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartList');
+            if(cart.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888; margin-top:50px;">Sua sacola está vazia.</p>';
+            } else {
+                list.innerHTML = cart.map((item, idx) => `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div class="cart-details">
+                            <div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
+                            <div style="color:var(--primary); font-size:0.85rem;">R$ ${item.price.toFixed(2)}</div>
+                            <span class="remove-btn" onclick="remove(${idx})">Remover</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const total = cart.reduce((acc, i) => acc + i.price, 0);
+            document.getElementById('totalPrice').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cartCounter').innerText = cart.length;
+        }
+
+        init();
+    </script>
+</body>
+</html>
